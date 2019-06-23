@@ -9,7 +9,7 @@ namespace DRPmodifierAPI
         SqlConnectionStringBuilder builder;
         public db()
         {
-            DotNetEnv.Env.Load(Environment.CurrentDirectory);
+            DotNetEnv.Env.Load(Environment.CurrentDirectory + "/.env");
             builder = new SqlConnectionStringBuilder
             {
                 DataSource = Environment.GetEnvironmentVariable("DataSource"),
