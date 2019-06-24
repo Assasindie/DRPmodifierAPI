@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DRPmodifierAPI.Controllers
@@ -13,6 +14,7 @@ namespace DRPmodifierAPI.Controllers
     {
         private readonly db Database = new db();
         // GET api/values
+        [EnableCors]
         [HttpGet]
         public ActionResult<IEnumerable<DRPenv>> Get()
         {

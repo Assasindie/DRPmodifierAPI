@@ -31,9 +31,7 @@ namespace DRPmodifierAPI
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:44340")
-                                       .AllowAnyHeader()
-                                       .AllowAnyMethod();
+                    builder.WithOrigins("https://drpmodifierweb.azurewebsites.net");
                 });
             });
 

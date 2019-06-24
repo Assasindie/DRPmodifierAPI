@@ -85,7 +85,7 @@ namespace DRPmodifierAPI
                 using SqlConnection connection = new SqlConnection(builder.ConnectionString);
                 connection.Open();
                 string sql = "INSERT INTO env VALUES (";
-                for (int i = 0; i < DRPValues.Length; i++)
+                for (int i = 0; i < DRPValues.Length - 1; i++)
                 {
                     if (i == DRPValues.Length - 2)
                     {
@@ -97,7 +97,7 @@ namespace DRPmodifierAPI
                     }
                 }
                 using SqlCommand command = new SqlCommand(sql, connection);
-                for (int i = 0; i < DRPValues.Length; i++)
+                for (int i = 0; i < DRPValues.Length - 1; i++)
                 {
                     command.Parameters.AddWithValue("@VALUE" + i.ToString(), DRPValues[i]);
                 }

@@ -39,7 +39,7 @@ namespace DRPmodifierAPI
 
         public string[] ToArray()
         {
-            string[] values = new string[11];
+            string[] values = new string[12];
             values[0] = FILENAMETEXTBOX;
             values[1] = JOINSECRETTEXTBOX;
             values[2] = PARTYIDTEXTBOX;
