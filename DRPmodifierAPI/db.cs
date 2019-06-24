@@ -30,14 +30,14 @@ namespace DRPmodifierAPI
                 using SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    string[] values = new string[reader.FieldCount - 1];
-                    for (int i = 0; i < reader.FieldCount - 1; i++)
+                    string[] values = new string[reader.FieldCount];
+                    for (int i = 0; i < reader.FieldCount; i++)
                     {
                         values[i] = reader.GetValue(i).ToString();
                     }
                     EnvDetails.Add(
                         new DRPenv(values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7],
-                        values[8], values[9], values[10]));
+                        values[8], values[9], values[10], values[11]));
                 }
                 return EnvDetails;
             }
@@ -66,10 +66,10 @@ namespace DRPmodifierAPI
                         values[i] = reader.GetValue(i).ToString();
                     }
                     return new DRPenv(values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7],
-                        values[8], values[9], values[10]);
+                        values[8], values[9], values[10], values[11]);
                 }
                 //cant find id so return empty env
-                return new DRPenv("", "", "", "", "", "", "", "", "", "", "");
+                return new DRPenv("", "", "", "", "", "", "", "", "", "", "", "");
             }
             catch (SqlException)
             {
@@ -87,7 +87,7 @@ namespace DRPmodifierAPI
                 string sql = "INSERT INTO env VALUES (";
                 for (int i = 0; i < DRPValues.Length; i++)
                 {
-                    if (i == DRPValues.Length - 1)
+                    if (i == DRPValues.Length - 2)
                     {
                         sql += "@VALUE" + i.ToString() + ")";
                     }

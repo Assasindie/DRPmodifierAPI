@@ -18,9 +18,10 @@ namespace DRPmodifierAPI
         public string CLIENTIDTEXTBOX { get; set; }
         public string LARGEIMAGETEXTBOX { get; set; }
         public string DETAILSTEXTBOX { get; set; }
+        public string Id { get; set; }
 
         public DRPenv(string FileName, string JoinSecret, string PartyID, string SmallImageKey, string LargeImageKey, string SmallImageText,
-            string EndTime, string StateText, string ClientID, string LargeImageText, string DetailsText)
+            string EndTime, string StateText, string ClientID, string LargeImageText, string DetailsText, string Id)
         {
             FILENAMETEXTBOX = FileName;
             JOINSECRETTEXTBOX = JoinSecret;
@@ -33,6 +34,7 @@ namespace DRPmodifierAPI
             CLIENTIDTEXTBOX = ClientID;
             LARGEIMAGETEXTBOX = LargeImageText;
             DETAILSTEXTBOX = DetailsText;
+            this.Id = Id;
         }
 
         public string[] ToArray()
@@ -49,13 +51,14 @@ namespace DRPmodifierAPI
             values[8] = CLIENTIDTEXTBOX;
             values[9] = LARGEIMAGETEXTBOX;
             values[10] = DETAILSTEXTBOX;
+            values[11] = Id;
             return values;
         }
 
         public static DRPenv ConvertBack(PostDRPenv env)
         {
             return new DRPenv(env.FILENAMETEXTBOX, env.JOINSECRETTEXTBOX, env.PARTYIDTEXTBOX, env.SMALLIMAGEKEYTEXTBOX, env.LARGEIMAGEKEYTEXTBOX,
-                env.SMALLIMAGETEXTBOX, env.ENDTIMEBOX, env.STATETEXTBOX, env.CLIENTIDTEXTBOX, env.LARGEIMAGETEXTBOX, env.DETAILSTEXTBOX);
+                env.SMALLIMAGETEXTBOX, env.ENDTIMEBOX, env.STATETEXTBOX, env.CLIENTIDTEXTBOX, env.LARGEIMAGETEXTBOX, env.DETAILSTEXTBOX, env.Id);
         }
     }
 }

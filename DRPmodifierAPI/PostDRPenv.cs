@@ -19,5 +19,6 @@ namespace DRPmodifierAPI
         public string CLIENTIDTEXTBOX { get; set; }
         public string LARGEIMAGETEXTBOX { get; set; }
         public string DETAILSTEXTBOX { get; set; }
+        public string Id { get; set; }
     }
 }
