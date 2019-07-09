@@ -1,5 +1,5 @@
 # DRPmodifierAPI
-API for the upcoming DRPmodifier website 🤗🤗🤗
+API for the DRPmodifier website 🤗🤗🤗
 
 Only 3 routes at the moment. One for updating (no verification is done of the contents or who is sending them), getting all values 
 and getting values for a particular ID.
