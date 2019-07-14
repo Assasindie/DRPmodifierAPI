@@ -4,10 +4,10 @@ using System.Data.SqlClient;
 
 namespace DRPmodifierAPI
 {
-    public class db
+    public class Db
     {
-        SqlConnectionStringBuilder builder;
-        public db()
+        readonly SqlConnectionStringBuilder builder;
+        public Db()
         {
             DotNetEnv.Env.Load(Environment.CurrentDirectory + "/.env");
             builder = new SqlConnectionStringBuilder
@@ -84,6 +84,7 @@ namespace DRPmodifierAPI
                 string[] DRPValues = values.ToArray();
                 using SqlConnection connection = new SqlConnection(builder.ConnectionString);
                 connection.Open();
+                //sql string builder @VALUE is used for SQL injection prevention
                 string sql = "INSERT INTO env VALUES (";
                 for (int i = 0; i < DRPValues.Length - 1; i++)
                 {
@@ -97,13 +98,36 @@ namespace DRPmodifierAPI
                     }
                 }
                 using SqlCommand command = new SqlCommand(sql, connection);
-                for (int i = 0; i < DRPValues.Length - 1; i++)
+                for (int i = 0; i < DRPValues.Length-1; i++)
                 {
                     command.Parameters.AddWithValue("@VALUE" + i.ToString(), DRPValues[i]);
                 }
                 command.ExecuteReader();
             }
             catch (SqlException) { /*sad react if this happens*/ }
+        }
+
+        public bool CheckInsert(DRPenv values)
+        {
+            try
+            {
+                using SqlConnection connection = new SqlConnection(builder.ConnectionString);
+                connection.Open();
+                /*Checks to see if the clientID is already present and/or if the file name is present. 
+                 If it returns more than 1 row it is not unique and may be spam.*/
+                string sql = "SELECT * FROM dbo.env WHERE CLIENTIDTEXTBOX = @VALUE1 OR FILENAMETEXTBOX = @VALUE2";
+                using SqlCommand command = new SqlCommand(sql, connection);
+                //used for SQL injection prevention.
+                command.Parameters.AddWithValue("@VALUE1", values.CLIENTIDTEXTBOX);
+                command.Parameters.AddWithValue("@VALUE2", values.FILENAMETEXTBOX);
+                using SqlDataReader reader = command.ExecuteReader();
+                //if query returns nothing neither value exists.
+                return reader.HasRows ? false : true;
+            }
+            catch (Exception)
+            {
+                return false;
+            } 
         }
     }
 }

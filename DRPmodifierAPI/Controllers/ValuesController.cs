@@ -12,8 +12,8 @@ namespace DRPmodifierAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly db Database = new db();
-        // GET api/values
+        private readonly Db Database = new Db();
+        // GET api/values returns all
         [EnableCors]
         [HttpGet]
         public ActionResult<IEnumerable<DRPenv>> Get()
@@ -22,20 +22,26 @@ namespace DRPmodifierAPI.Controllers
             return values;
         }
 
-        // GET api/values/5
+        // GET api/values/id 
         [HttpGet("{id}")]
         public ActionResult<DRPenv> Get(int id)
         {
             return Database.GetID(id);
         }
 
-        // POST api/values
+        // POST api/values accepts DRPenv in a JSON form
         [HttpPost]
-        public DRPenv Post(PostDRPenv values)
+        public string Post(PostDRPenv values)
         {
             DRPenv drp = DRPenv.ConvertBack(values);
-            Database.Insert(drp);
-            return drp;
+            if (Database.CheckInsert(drp))
+            {
+                Database.Insert(drp);
+                return "Successfully Added!";
+            }else
+            {
+                return "Failed to Add!";
+            }
         }
 
     }
