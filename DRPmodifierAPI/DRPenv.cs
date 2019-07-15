@@ -60,5 +60,18 @@ namespace DRPmodifierAPI
             return new DRPenv(env.FILENAMETEXTBOX, env.JOINSECRETTEXTBOX, env.PARTYIDTEXTBOX, env.SMALLIMAGEKEYTEXTBOX, env.LARGEIMAGEKEYTEXTBOX,
                 env.SMALLIMAGETEXTBOX, env.ENDTIMEBOX, env.STATETEXTBOX, env.CLIENTIDTEXTBOX, env.LARGEIMAGETEXTBOX, env.DETAILSTEXTBOX, env.Id);
         }
+
+        public bool CheckNull(DRPenv env)
+        {
+            string[] array = env.ToArray();
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                if (string.IsNullOrEmpty(array[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

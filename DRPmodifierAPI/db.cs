@@ -8,6 +8,8 @@ namespace DRPmodifierAPI
     public class Db
     {
         private static DateTime LastUpload = DateTime.Now;
+        //first upload will fail w/o this as DateTime.Now will be the exact same.
+        private bool AllowInitialUpload = true;
         readonly SqlConnectionStringBuilder builder;
         public Db()
         {
@@ -112,26 +114,28 @@ namespace DRPmodifierAPI
 
         public string CheckInsert(DRPenv values)
         {
-            //Checks if it has been 5 minutes since last upload.
+            //checks if the json is malformed
+            if (values.CheckNull(values))
+            {
+                return "Json is incomplete or wrong";
+            }
+            //Checks if it has been 5 minutes since last upload. 
             TimeSpan TimeElapsed = DateTime.Now - LastUpload;
-            if(TimeElapsed.TotalSeconds < 300)
+            if (TimeElapsed.TotalSeconds < 300 && !AllowInitialUpload)
             {
                 return "Too many uploads recently, please try again later.";
             }
-            //ClientID should be an int 
-            if(!int.TryParse(values.CLIENTIDTEXTBOX, out int ClientID))
-            {
-                return "Invalid Client ID";
-            }
+            //Sets the initial upload bool to false as it has gone past the first timer check.
+            AllowInitialUpload = false;
             //bad words big yikes
             List<string> Profanity = new List<string> {
                 "nig",
                 "fuck",
                 "shit",
             };
-
             //if contains any bad words
-            if (Profanity.Any(values.FILENAMETEXTBOX.ToLower().Contains))
+            if (Profanity.Any(values.FILENAMETEXTBOX.ToLower().Contains) || Profanity.Any(values.DETAILSTEXTBOX.ToLower().Contains)
+                || Profanity.Any(values.STATETEXTBOX.ToLower().Contains) || Profanity.Any(values.CLIENTIDTEXTBOX.ToLower().Contains))
             {
                 return "Failed to add - Contains Profanity";
             }
