@@ -9,7 +9,7 @@ namespace DRPmodifierAPI
     {
         private static DateTime LastUpload = DateTime.Now;
         //first upload will fail w/o this as DateTime.Now will be the exact same.
-        private bool AllowInitialUpload = true;
+        private static bool AllowInitialUpload = true;
         readonly SqlConnectionStringBuilder builder;
         public Db()
         {

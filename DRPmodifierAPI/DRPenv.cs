@@ -20,6 +20,11 @@ namespace DRPmodifierAPI
         public string DETAILSTEXTBOX { get; set; }
         public string Id { get; set; }
 
+        public DRPenv()
+        {
+
+        }
+
         public DRPenv(string FileName, string JoinSecret, string PartyID, string SmallImageKey, string LargeImageKey, string SmallImageText,
             string EndTime, string StateText, string ClientID, string LargeImageText, string DetailsText, string Id)
         {
@@ -53,12 +58,6 @@ namespace DRPmodifierAPI
             values[10] = DETAILSTEXTBOX;
             values[11] = Id;
             return values;
-        }
-
-        public static DRPenv ConvertBack(PostDRPenv env)
-        {
-            return new DRPenv(env.FILENAMETEXTBOX, env.JOINSECRETTEXTBOX, env.PARTYIDTEXTBOX, env.SMALLIMAGEKEYTEXTBOX, env.LARGEIMAGEKEYTEXTBOX,
-                env.SMALLIMAGETEXTBOX, env.ENDTIMEBOX, env.STATETEXTBOX, env.CLIENTIDTEXTBOX, env.LARGEIMAGETEXTBOX, env.DETAILSTEXTBOX, env.Id);
         }
 
         public bool CheckNull(DRPenv env)
