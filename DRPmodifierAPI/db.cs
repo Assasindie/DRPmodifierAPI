@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace DRPmodifierAPI
 {
     public class Db
     {
+        private static DateTime LastUpload = DateTime.Now;
         readonly SqlConnectionStringBuilder builder;
         public Db()
         {
@@ -18,6 +20,7 @@ namespace DRPmodifierAPI
                 InitialCatalog = Environment.GetEnvironmentVariable("InitialCatalog"),
             };
         }
+
         public List<DRPenv> GetAll()
         {
             try
@@ -107,8 +110,33 @@ namespace DRPmodifierAPI
             catch (SqlException) { /*sad react if this happens*/ }
         }
 
-        public bool CheckInsert(DRPenv values)
+        public string CheckInsert(DRPenv values)
         {
+            //Checks if it has been 5 minutes since last upload.
+            TimeSpan TimeElapsed = DateTime.Now - LastUpload;
+            if(TimeElapsed.TotalSeconds < 300)
+            {
+                return "Too many uploads recently, please try again later.";
+            }
+            //ClientID should be an int 
+            if(!int.TryParse(values.CLIENTIDTEXTBOX, out int ClientID))
+            {
+                return "Invalid Client ID";
+            }
+            //bad words big yikes
+            List<string> Profanity = new List<string> {
+                "nig",
+                "fuck",
+                "shit",
+            };
+
+            //if contains any bad words
+            if (Profanity.Any(values.FILENAMETEXTBOX.ToLower().Contains))
+            {
+                return "Failed to add - Contains Profanity";
+            }
+
+            //if the previous checks pass try to add to the DB.
             try
             {
                 using SqlConnection connection = new SqlConnection(builder.ConnectionString);
@@ -122,11 +150,18 @@ namespace DRPmodifierAPI
                 command.Parameters.AddWithValue("@VALUE2", values.FILENAMETEXTBOX);
                 using SqlDataReader reader = command.ExecuteReader();
                 //if query returns nothing neither value exists.
-                return reader.HasRows ? false : true;
+                if(reader.HasRows)
+                {
+                    return "Preset already exists!";
+                } else
+                {
+                    LastUpload = DateTime.Now;
+                    return "Success";
+                }
             }
             catch (Exception)
             {
-                return false;
+                return "Something went wrong";
             } 
         }
     }

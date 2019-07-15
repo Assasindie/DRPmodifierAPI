@@ -31,16 +31,17 @@ namespace DRPmodifierAPI.Controllers
 
         // POST api/values accepts DRPenv in a JSON form
         [HttpPost]
-        public string Post(PostDRPenv values)
+        public ActionResult<string> Post(PostDRPenv values)
         {
             DRPenv drp = DRPenv.ConvertBack(values);
-            if (Database.CheckInsert(drp))
+            string result = Database.CheckInsert(drp);
+            if (result == "Success")
             {
                 Database.Insert(drp);
-                return "Successfully Added!";
+                return Ok("Successfully Added!");
             }else
             {
-                return "Failed to Add!";
+                return BadRequest(result);
             }
         }
 
